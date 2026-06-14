@@ -22,23 +22,54 @@ class UserManagementController extends Controller
         $this->middleware('role:posko-utama|posko');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $user = User::with('roles')->whereNull('deleted_at')->paginate(10);
-        return ApiResponse::success($user);
+        $user = User::with('roles')->whereNull('deleted_at');
+
+        if (isset($request->all) && $request->all) {
+            return ApiResponse::success($user->get());
+        }
+
+        return ApiResponse::success($user->paginate(10));
     }
 
-    public function createOrEdit()
+    public function createOrEdit(Request $request)
     {
         try {
 
             $posko = Posko::whereNull('deleted_by')->whereNull('deleted_at')->get();
             $roles = Role::all();
 
-            return ApiResponse::success([
+            $data = [
                 'posko' => $posko,
                 'roles' => $roles
-            ]);
+            ];
+
+            if (isset($request->id)) {
+
+                /**
+                 * Get User Record from id
+                 */
+                $user = User::find($request->id);
+
+                /**
+                 * Validation User id
+                 */
+                if (!is_null($user)) {
+
+                    $data['user'] = $user;
+
+                    /**
+                     * User Role Configuration
+                     */
+                    $data['user_role'] = $user->getRoleNames()[0];
+                    $data['user_role_name'] = ucwords(implode(' ', explode('-', $user->getRoleNames()[0])));
+                } else {
+                    return ApiResponse::badRequest('Data Tidak Ditemukan');
+                }
+            }
+
+            return ApiResponse::success($data);
         } catch (\Throwable $th) {
 
             return ApiResponse::badRequest($th->getMessage());
@@ -49,15 +80,16 @@ class UserManagementController extends Controller
     {
         try {
             $request->validate([
-                'name' => 'required|string|max:255',
-                'phone' => 'required|max:13',
-                'username' => 'required|string|max:255|unique:users',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|confirmed',
+                'name' => 'required|string',
+                'email' => 'required|string|email',
+                'username' => 'required|string',
                 'role' => 'required',
+                'phone' => 'required|max:13',
+                'password' => 'required|string|confirmed',
             ]);
 
             DB::beginTransaction();
+
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -99,12 +131,14 @@ class UserManagementController extends Controller
              * Validation User id
              */
             if (!is_null($user)) {
+
                 $data['user'] = $user;
 
                 /**
                  * User Role Configuration
                  */
-                $data['user_role'] = ucwords(implode(' ', explode('-', $user->getRoleNames()[0])));
+                $data['user_role'] = $user->getRoleNames()[0];
+                $data['user_role_name'] = ucwords(implode(' ', explode('-', $user->getRoleNames()[0])));
 
                 return ApiResponse::success($data);
             } else {
@@ -124,7 +158,7 @@ class UserManagementController extends Controller
                 'username' => 'required|string|max:255|unique:users,username,' . $id,
                 'email' => 'required|string|email|max:255|unique:users,email,' . $id,
                 'password' => 'nullable|confirmed',
-                'address' => 'string',
+                'address' => 'required',
             ]);
 
             $data['IDPosko'] = isset($request->idPosko) ? $request->idPosko : null;
@@ -169,18 +203,14 @@ class UserManagementController extends Controller
         try {
             DB::beginTransaction();
 
-            $user = User::where('id', $id)->update([
+            User::where('id', $id)->update([
                 'deleted_at' => Carbon::now(),
             ]);
 
-            if ($user) {
-                DB::commit();
-                return ApiResponse::success('User berhasil dihapus');
-            } else {
-                DB::rollBack();
-                return ApiResponse::badRequest('user gagal dihapus');
-            }
+            DB::commit();
+            return ApiResponse::success('User berhasil dihapus');   
         } catch (Exception $e) {
+            DB::rollBack();
             return ApiResponse::badRequest($e->getMessage());
         }
     }

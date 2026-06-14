@@ -11,7 +11,7 @@ class ApiResponse
      * @param mixed $data
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function success($data = null, $message = 'Sucess')
+    public static function success($data = null, $message = 'Success')
     {
         return response()->json(
             [

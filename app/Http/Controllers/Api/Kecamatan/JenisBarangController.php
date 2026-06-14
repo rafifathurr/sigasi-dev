@@ -22,17 +22,18 @@ class JenisBarangController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            // Mengambil data jenis barang dengan pagination (10 data per halaman)
-            $jenis_barang = JenisBarang::whereNull('deleted_by')->whereNull('deleted_at')->paginate(10);
+
+            $jenis_barang = JenisBarang::whereNull('deleted_by')->whereNull('deleted_at');
+
+            if (isset($request->all) && $request->all) {
+                return ApiResponse::success($jenis_barang->get());
+            }
 
             // Mengembalikan response sukses dengan data jenis barang
-            return ApiResponse::success($jenis_barang);
-
-            // Kode ini tidak akan pernah dijalankan karena return sebelumnya sudah dipanggil
-            return ApiResponse::badRequest();
+            return ApiResponse::success($jenis_barang->paginate(10));
         } catch (\Throwable $th) {
             // Menangkap exception dan mengembalikan pesan error dengan status 500 (internal server error)
             return response()->json(['message' => $th->getMessage()], 500);
@@ -125,22 +126,14 @@ class JenisBarangController extends Controller
             }
 
             // Update data jenis barang berdasarkan IDJenisBarang
-            $update_jenis_barang = JenisBarang::where('IDJenisBarang', $id)->update([
+            JenisBarang::where('IDJenisBarang', $id)->update([
                 'JenisBarang' => $request->jenis_barang,
                 'LastUpdateDate' => now(),
             ]);
 
-            // Jika update berhasil, commit transaksi dan kembalikan response sukses
-            if ($update_jenis_barang == 1) {
-                DB::commit();
-                return ApiResponse::success(JenisBarang::where('IDJenisBarang', $id)->first());
-            }
-
-            // Rollback jika update gagal
-            DB::rollback();
-            return ApiResponse::badRequest();
+            DB::commit();
+            return ApiResponse::success(JenisBarang::where('IDJenisBarang', $id)->first());
         } catch (\Throwable $th) {
-            // Rollback transaksi jika terjadi exception
             DB::rollback();
             return response()->json(['message' => $th->getMessage()], 500);
         }
@@ -155,20 +148,16 @@ class JenisBarangController extends Controller
         try {
             DB::beginTransaction();
 
-            $jenis_barang = JenisBarang::where('IDJenisBarang', $id)->update([
+            JenisBarang::where('IDJenisBarang', $id)->update([
                 'deleted_at' => Carbon::now(),
                 'deleted_by' => Auth::user()->id,
             ]);
-            if ($jenis_barang) {
-                DB::commit();
-                return ApiResponse::success('jenis barang berhasil dihapus');
-            } else {
-                DB::rollBack();
-                return ApiResponse::badRequest('jenis barang gagal dihapus');
-            }
+
+            DB::commit();
+            return ApiResponse::success('Jenis barang berhasil dihapus');
         } catch (Exception $e) {
+            DB::rollBack();
             return ApiResponse::badRequest($e->getMessage());
         }
     }
-
 }

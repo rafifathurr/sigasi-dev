@@ -30,25 +30,27 @@ class PengungsiController extends Controller
 
         // pencarian berdasarkan id posko
         if (isset($request->posko)) {
-            $data_pengungsi->where('IDPosko', $request->posko);
+            $data_pengungsi = $data_pengungsi->where('IDPosko', $request->posko);
         }
 
         // pencarian berdasarkan id kelompok
         if (isset($request->kelompok)) {
-            $data_pengungsi->whereHas('penduduk', function ($query) use ($request) {
+            $data_pengungsi = $data_pengungsi->whereHas('penduduk', function ($query) use ($request) {
                 $query->where('Kelompok', $request->kelompok);
             });
         }
 
-        $pengungsi = $data_pengungsi->paginate(10);
+        if (isset($request->all) && $request->all) {
+            return ApiResponse::success($data_pengungsi->get());
+        }
 
-        return ApiResponse::success($pengungsi);
+        return ApiResponse::success($data_pengungsi->paginate(10));
     }
 
     public function show($id)
     {
         // menampilkan detail pengungsi, degan relasi pendusuk, posko dan user
-        $pengungsi = Pengungsi::with(['penduduk', 'posko.user'])->where('IDPengungsi', $id)->first();
+        $pengungsi = Pengungsi::with(['penduduk.kelompok', 'posko.user'])->where('IDPengungsi', $id)->first();
 
         if (is_null($pengungsi)) {
             return ApiResponse::badRequest('Data pengungsi tidak ditemukan.');
@@ -57,17 +59,50 @@ class PengungsiController extends Controller
         return ApiResponse::success($pengungsi);
     }
 
-    public function createOrEdit()
+    public function createOrEdit(Request $request)
     {
         try {
 
-            $penduduk = Penduduk::whereNull('deleted_by')->whereNull('deleted_at')->get();
-            $posko = Posko::whereNull('deleted_by')->whereNull('deleted_at')->get();
+            $penduduk_id = Pengungsi::whereNull('deleted_by')->whereNull('deleted_at')->pluck('IDPenduduk')->toArray();
 
-            return ApiResponse::success([
-                'penduduk' => $penduduk,
-                'posko' => $posko
-            ]);
+            $penduduk = Penduduk::whereNull('deleted_by')->whereNull('deleted_at')->whereNotIn('IDPenduduk', $penduduk_id)->get();
+            $posko = Posko::with(['user'])->whereNull('deleted_by')->whereNull('deleted_at')->get();
+
+            $data = [
+                'posko' => $posko,
+                'penduduk' => $penduduk
+            ];
+
+            if (isset($request->id)) {
+
+                /**
+                 * Get User Record from id
+                 */
+                $pengungsi = Pengungsi::with(['penduduk.kelompok', 'posko.user'])->where('IDPengungsi', $request->id)->first();
+
+                /**
+                 * Validation pengungsi id
+                 */
+                if (!is_null($pengungsi)) {
+
+                    $penduduk_id = array_filter($penduduk_id, function ($row) use ($pengungsi) {
+                        return $row != $pengungsi->IDPenduduk;
+                    });
+
+                    $penduduk = Penduduk::whereNull('deleted_by')->whereNull('deleted_at')->whereNotIn('IDPenduduk', $penduduk_id)->get();
+                    $posko = Posko::with(['user'])->whereNull('deleted_by')->whereNull('deleted_at')->get();
+
+                    $data = [
+                        'posko' => $posko,
+                        'penduduk' => $penduduk,
+                        'pengungsi' => $pengungsi,
+                    ];
+                } else {
+                    return ApiResponse::badRequest('Data Tidak Ditemukan');
+                }
+            }
+
+            return ApiResponse::success($data);
         } catch (\Throwable $th) {
 
             return ApiResponse::badRequest($th->getMessage());
@@ -80,7 +115,7 @@ class PengungsiController extends Controller
             $validator = Validator::make($request->all(), [ // validasi parameter
                 'idPosko' => 'required|numeric',
                 'idPenduduk' => 'required|numeric',
-                'condition' => 'string|max:255',
+                'condition' => 'required',
             ]);
 
             if ($validator->fails()) { // jika parameter ada yang tidak sesuai dengan aturan, maka masuk kondisi error
@@ -91,11 +126,11 @@ class PengungsiController extends Controller
             $user = User::where('id', $request->idPenduduk)->first();
 
             if (!$posko) { // cek apakah posko ada, jika tidak ada maka return error
-                return ApiResponse::badRequest('posko tidak ditemkan');
+                return ApiResponse::badRequest('Posko tidak ditemukan');
             }
 
             if (!$user) { // cek apakah user ada, jika tidak ada maka return error
-                return ApiResponse::badRequest('user tidak ditemkan');
+                return ApiResponse::badRequest('User tidak ditemukan');
             }
 
             DB::beginTransaction(); // memulai transaksi
@@ -125,7 +160,7 @@ class PengungsiController extends Controller
             $validator = Validator::make($request->all(), [ // cek validasi
                 'idPosko' => 'required|numeric',
                 'idPenduduk' => 'required|numeric',
-                'condition' => 'string|max:255',
+                'condition' => 'required',
             ]);
 
             if ($validator->fails()) { // jika ada validasi yang tidak sesuai maka return error
@@ -144,22 +179,19 @@ class PengungsiController extends Controller
             }
 
             DB::beginTransaction(); // memulai transaksi
-            $pengungsi = Pengungsi::where('IDPengungsi', $id)->lockForUpdate()->update([ // update record berdasarkan id pengungsi
+            Pengungsi::where('IDPengungsi', $id)->update([ // update record berdasarkan id pengungsi
                 'IDPenduduk' => $request->idPenduduk,
                 'IDPosko' => $request->idPosko,
                 'KondisiKhusus' => $request->condition,
                 'LastUpdateDate' => Carbon::now(),
                 'LastUpdateBy' => Auth::user()->id,
             ]);
-            if ($pengungsi) {
-                DB::commit();
-                $data_pengungsi = Pengungsi::with(['penduduk', 'posko.user'])->where('IDPengungsi', $id)->first();
-                return ApiResponse::success($data_pengungsi);
-            } else {
-                DB::rollBack();
-                return ApiResponse::badRequest('pengungsi tidak ditemukan');
-            }
+
+            DB::commit();
+            $data_pengungsi = Pengungsi::with(['penduduk', 'posko.user'])->where('IDPengungsi', $id)->first();
+            return ApiResponse::success($data_pengungsi);
         } catch (Exception $e) {
+            DB::rollBack();
             return ApiResponse::badRequest($e);
         }
     }
@@ -173,14 +205,11 @@ class PengungsiController extends Controller
                 'deleted_at' => Carbon::now(),
                 'deleted_by' => Auth::user()->id,
             ]);
-            if ($pengungsi) {
-                DB::commit();
-                return ApiResponse::success('pengungsi berhasil dihapus');
-            } else {
-                DB::rollBack();
-                return ApiResponse::badRequest('pengungsi gagal dihapus');
-            }
+
+            DB::commit();
+            return ApiResponse::success('Pengungsi berhasil dihapus');
         } catch (Exception $e) {
+            DB::rollBack();
             return ApiResponse::badRequest($e->getMessage());
         }
     }

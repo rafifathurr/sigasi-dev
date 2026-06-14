@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Penduduk;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
+use App\Models\Kelompok\Kelompok;
 use App\Models\Penduduk\Penduduk;
 use Carbon\Carbon;
 use Exception;
@@ -30,24 +31,59 @@ class PendudukController extends Controller
 
             // pencarian berdasarkan desa
             if (isset($request->desa)) {
-                $data_penduduk->where('desa', 'LIKE', '%' . $request->desa . '%'); // pencarian menggunakan type string
+                $data_penduduk = $data_penduduk->where('desa', 'LIKE', '%' . $request->desa . '%'); // pencarian menggunakan type string
             }
 
             // pencarian berdasarkan kelompok
             if (isset($request->kelompok)) {
-                $data_penduduk->where('Kelompok', $request->kelompok);
+                $data_penduduk = $data_penduduk->where('Kelompok', $request->kelompok);
             }
 
-            $penduduk = $data_penduduk->paginate(10);
+            if (isset($request->all) && $request->all) {
+                return ApiResponse::success($data_penduduk->get());
+            }
 
             // Mengembalikan response sukses dengan data penduduk
-            return ApiResponse::success($penduduk);
+            return ApiResponse::success($data_penduduk->paginate(10));
         } catch (\Throwable $th) {
             // Menangkap exception dan mengembalikan pesan error
             return ApiResponse::badRequest($th->getMessage());
         }
     }
 
+    public function createOrEdit(Request $request)
+    {
+        try {
+
+            $kelompok = Kelompok::whereNull('deleted_by')->whereNull('deleted_at')->get();
+
+            $data = [
+                'kelompok' => $kelompok
+            ];
+
+            if (isset($request->id)) {
+
+                /**
+                 * Get Penduduk Record from id
+                 */
+                $penduduk = Penduduk::find($request->id);
+
+                /**
+                 * Validation penduduk id
+                 */
+                if (!is_null($penduduk)) {
+                    $data['penduduk'] = $penduduk;
+                } else {
+                    return ApiResponse::badRequest('Data Tidak Ditemukan');
+                }
+            }
+
+            return ApiResponse::success($data);
+        } catch (\Throwable $th) {
+
+            return ApiResponse::badRequest($th->getMessage());
+        }
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -155,7 +191,7 @@ class PendudukController extends Controller
             }
 
             // Update data Penduduk berdasarkan IDPenduduk
-            $store = Penduduk::lockForUpdate()->where('IDPenduduk', $id)->update([
+            Penduduk::where('IDPenduduk', $id)->update([
                 'KTP' => $request->ktp,
                 'Nama' => $request->nama,
                 'Alamat' => $request->alamat,
@@ -167,19 +203,11 @@ class PendudukController extends Controller
                 'LastUpdateBy' => auth()->user()->id,
             ]);
 
-            // Jika update berhasil, commit transaksi dan kembalikan response sukses
-            if ($store) {
-                DB::commit();
-                return ApiResponse::success(Penduduk::with([
-                    'kelompok'
-                ])->where('IDPenduduk', $id)->first());
-            }
-
-            // Rollback jika update gagal
-            DB::rollback();
-            return ApiResponse::badRequest();
+            DB::commit();
+            return ApiResponse::success(Penduduk::with([
+                'kelompok'
+            ])->where('IDPenduduk', $id)->first());
         } catch (\Throwable $th) {
-            // Rollback transaksi jika terjadi exception
             DB::rollback();
             return ApiResponse::badRequest($th->getMessage());
         }
@@ -194,18 +222,15 @@ class PendudukController extends Controller
         try {
             DB::beginTransaction();
 
-            $penduduk = Penduduk::where('IDPenduduk', $id)->update([
+            Penduduk::where('IDPenduduk', $id)->update([
                 'deleted_at' => Carbon::now(),
                 'deleted_by' => Auth::user()->id,
             ]);
-            if ($penduduk) {
-                DB::commit();
-                return ApiResponse::success('penduduk berhasil dihapus');
-            } else {
-                DB::rollBack();
-                return ApiResponse::badRequest('penduduk gagal dihapus');
-            }
+
+            DB::commit();
+            return ApiResponse::success('Penduduk berhasil dihapus');
         } catch (Exception $e) {
+            DB::rollBack();
             return ApiResponse::badRequest($e->getMessage());
         }
     }

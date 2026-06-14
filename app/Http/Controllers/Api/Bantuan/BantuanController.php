@@ -180,7 +180,7 @@ class BantuanController extends Controller
             }
 
             // Mengupdate data bantuan di tabel 'bantuan' berdasarkan ID yang diberikan
-            $bantuan = Bantuan::lockForUpdate()->where('IDBantuan', $id)->update([
+            $bantuan = Bantuan::where('IDBantuan', $id)->update([
                 'IDDonatur' => $request->donatur, // Update ID donatur
                 'TanggalBantuan' => $request->tanggal_bantuan, // Update tanggal bantuan
                 'LastUpdateDate' => now(), // Update waktu terakhir diubah
@@ -203,7 +203,7 @@ class BantuanController extends Controller
 
                 // Hapus barang yang tidak ada di request baru
                 if (!empty($to_delete)) {
-                    Bantuan_Dtl::lockForUpdate()->where('IDBantuan', $id)
+                    Bantuan_Dtl::where('IDBantuan', $id)
                         ->whereIn('IDBarang', $to_delete)
                         ->delete();
                 }
@@ -222,7 +222,7 @@ class BantuanController extends Controller
                 // Update jumlah barang yang sudah ada di data lama dan baru
                 foreach ($request->barang as $item) {
                     if (in_array($item['id_barang'], $to_update)) {
-                        Bantuan_Dtl::lockForUpdate()->where('IDBantuan', $id)
+                        Bantuan_Dtl::where('IDBantuan', $id)
                             ->where('IDBarang', $item['id_barang'])
                             ->update([
                                 'Jumlah' => $item['jumlah_barang']

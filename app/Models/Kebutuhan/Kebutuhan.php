@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Kebutuhan extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'IDKebutuhan';
+
     protected $table = 'kebutuhan';
     protected $guarded = [];
     public $timestamps = false;

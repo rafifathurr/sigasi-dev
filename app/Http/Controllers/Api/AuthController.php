@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
+use App\Models\Menus\Menus;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -41,11 +42,14 @@ class AuthController extends Controller
                 return ApiResponse::unauthorized('Email atau Password Anda salah');
             }
 
+            $role = auth()->guard('api')->user()->roles->pluck('name')[0] ?? null;
+
             return ApiResponse::success([
                 'user' => auth()->guard('api')->user(),
+                'role' => $role,
+                'menus' => !is_null($role) ? Menus::where('Role', $role)->get() : [],
                 'token' => $token,
             ]);
-
         } catch (\Exception $e) {
             return ApiResponse::badRequest(null, $e->getMessage());
         }

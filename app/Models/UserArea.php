@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserArea extends Model
 {
     use HasFactory;
+    
     protected $table = 'user_area';
     protected $guarded = [];
 

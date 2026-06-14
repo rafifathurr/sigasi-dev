@@ -17,6 +17,9 @@ class Controller extends BaseController
         if (Auth::guard('api')->check()) {
             LogActivity::create([
                 'IDUser' => Auth::guard('api')->user()->id,
+                'Url' => url()->current(),
+                'Method' => request()->method(),
+                'IpAddress' => request()->ip(),
             ]);
         }
     }

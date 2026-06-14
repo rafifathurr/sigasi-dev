@@ -18,20 +18,24 @@ class DonaturController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('role:kecamatan')->only('index');
-        $this->middleware('role:bansos|kecamatan');
+        $this->middleware('role:bansos', ['except' => ['index']]);
+        $this->middleware('role:bansos|kecamatan', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
     }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             // Mengambil data donatur dengan paginasi
-            $donatur = Donatur::whereNull('deleted_by')->whereNull('deleted_at')->paginate(10); // Membatasi hasil menjadi 10 per halaman
+            $donatur = Donatur::whereNull('deleted_by')->whereNull('deleted_at'); // Membatasi hasil menjadi 10 per halaman
 
-            // Mengembalikan respons sukses dengan data donatur yang dipaginasi
-            return ApiResponse::success($donatur);
+            if (isset($request->all) && $request->all) {
+                return ApiResponse::success($donatur->get());
+            }
+
+            // Mengembalikan response sukses dengan data donatur
+            return ApiResponse::success($donatur->paginate(10));
         } catch (\Throwable $th) {
             // Menangkap dan menampilkan pesan error jika terjadi kesalahan
             return ApiResponse::badRequest($th->getMessage());
@@ -131,7 +135,7 @@ class DonaturController extends Controller
             }
 
             // Mengupdate data donatur di tabel berdasarkan ID yang diberikan
-            $donatur = Donatur::lockForUpdate()->where('IDDonatur', $id)->update([
+            Donatur::where('IDDonatur', $id)->update([
                 'NamaPerusahaan' => $request->nama_perusahaan, // Mengupdate nama perusahaan
                 'Alamat' => $request->alamat, // Mengupdate alamat
                 'NomorKontak' => $request->nomor_kontak, // Mengupdate nomor kontak
@@ -139,18 +143,9 @@ class DonaturController extends Controller
                 'LastUpdateBy' => Auth::user()->id, // Mengupdate user yang memperbarui data
             ]);
 
-            // Jika proses update berhasil
-            if ($donatur) {
-                DB::commit(); // Menyimpan perubahan ke database
-                // Mengembalikan respons sukses dengan data donatur terbaru
-                return ApiResponse::success(Donatur::where('IDDonatur', $id)->first());
-            }
-
-            // Jika update gagal, rollback transaksi
-            DB::rollback();
-            return ApiResponse::badRequest(); // Mengembalikan respons bad request
+            DB::commit();
+            return ApiResponse::success(Donatur::where('IDDonatur', $id)->first());
         } catch (\Throwable $th) {
-            // Rollback transaksi jika terjadi exception
             DB::rollback();
             return ApiResponse::badRequest($th->getMessage()); // Mengembalikan error dengan pesan exception
         }
@@ -164,18 +159,15 @@ class DonaturController extends Controller
         try {
             DB::beginTransaction();
 
-            $donatur = Donatur::where('IDDonatur', $id)->update([
+            Donatur::where('IDDonatur', $id)->update([
                 'deleted_at' => Carbon::now(),
                 'deleted_by' => Auth::user()->id,
             ]);
-            if ($donatur) {
-                DB::commit();
-                return ApiResponse::success('donatur berhasil dihapus');
-            } else {
-                DB::rollBack();
-                return ApiResponse::badRequest('donatur gagal dihapus');
-            }
+
+            DB::commit();
+            return ApiResponse::success('Donatur berhasil dihapus');
         } catch (Exception $e) {
+            DB::rollBack();
             return ApiResponse::badRequest($e->getMessage());
         }
     }

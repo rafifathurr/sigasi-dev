@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('log_activity', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->integer('IDLogActivity')->autoIncrement();
-            $table->integer('IDUser');
-            $table->string('Url');
+            $table->string('MenuCode');
+            $table->string('Role');
+            $table->string('Menu');
             $table->string('Method');
-            $table->string('IpAddress');
+            $table->string('Url');
+            $table->integer('Sort');
             $table->timestamps();
-
-            $table->foreign('IDUser')->references('id')->on('users');
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('log_activity');
+        Schema::dropIfExists('menus');
     }
 };

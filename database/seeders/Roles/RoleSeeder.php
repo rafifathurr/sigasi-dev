@@ -16,6 +16,5 @@ class RoleSeeder extends Seeder
         Role::create(['name' => 'posko']);
         Role::create(['name' => 'bansos']);
         Role::create(['name' => 'kecamatan']);
-
     }
 }
