@@ -25,7 +25,7 @@ class BantuanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             // Mengambil data bantuan beserta relasinya
@@ -33,11 +33,14 @@ class BantuanController extends Controller
                 'donatur', // Memuat relasi 'donatur'
                 'bantuanDetail.barang' // Memuat relasi 'bantuanDetail' dan 'barang'
             ])
-                ->orderBy('IDBantuan', 'desc') // Mengurutkan data berdasarkan IDBantuan secara menurun
-                ->paginate(10); // Menggunakan pagination untuk membatasi data menjadi 10 per halaman
+                ->orderBy('IDBantuan', 'desc'); // Mengurutkan data berdasarkan IDBantuan secara menurun
 
-            // Mengembalikan respons sukses dengan data bantuan yang dipaginasi
-            return ApiResponse::success($bantuan);
+            if (isset($request->all) && $request->all) {
+                return ApiResponse::success($bantuan->get());
+            }
+
+            // Mengembalikan response sukses dengan data bantuan
+            return ApiResponse::success($bantuan->paginate(10));
         } catch (\Throwable $th) {
             // Menangkap dan menampilkan pesan error jika terjadi kesalahan
             return ApiResponse::badRequest($th->getMessage());
@@ -105,12 +108,10 @@ class BantuanController extends Controller
 
                 // Jika proses penyimpanan detail bantuan berhasil
                 if ($bantuan_detail) {
-
                     // Komit transaksi, simpan perubahan ke database
                     DB::commit();
                     return ApiResponse::created($bantuan); // Mengembalikan respons sukses
                 } else {
-
                     // Rollback transaksi jika ada error dalam penyimpanan detail bantuan
                     DB::rollback();
                     return ApiResponse::badRequest(); // Mengembalikan respons error
@@ -121,7 +122,6 @@ class BantuanController extends Controller
             DB::rollback();
             return ApiResponse::badRequest(); // Mengembalikan respons error
         } catch (\Throwable $th) {
-
             // Rollback transaksi jika terjadi exception
             DB::rollback();
             return ApiResponse::badRequest($th->getMessage()); // Mengembalikan error dengan pesan exception

@@ -25,7 +25,7 @@ class KebutuhanController extends Controller
     public function index(Request $request)
     {
         // menampilkan data kebutuhan dengan dibatasi 10 record
-        $data_kebutuhan = Kebutuhan::with(['posko.user', 'barang.jenisBarang'])->whereNull('deleted_by')->whereNull('deleted_at');
+        $data_kebutuhan = Kebutuhan::with(['posko.user', 'barang.jenisBarang', 'user'])->whereNull('deleted_by')->whereNull('deleted_at');
 
         // pencarian berdasarkan id posko
         if (isset($request->posko)) {
@@ -39,24 +39,26 @@ class KebutuhanController extends Controller
         return ApiResponse::success($data_kebutuhan->paginate(10));
     }
 
-    public function createOrEdit()
+    public function createOrEdit(Request $request)
     {
         try {
 
             $barang = Barang::whereNull('deleted_by')->whereNull('deleted_at')->get();
-            $posko = Posko::whereNull('deleted_by')->whereNull('deleted_at')->get();
+            $posko = Posko::with(['user'])->whereNull('deleted_by')->whereNull('deleted_at');
 
-            $data = [
-                'barang' => $barang,
-                'posko' => $posko
-            ];
+            $data['barang'] = $barang;
+            $data['poskos'] = $posko->get();
+
+            if (auth()->user()->hasRole('posko')) {
+                $data['posko'] = $posko->where('Ketua', auth()->user()->id)->first();
+            }
 
             if (isset($request->id)) {
 
                 /**
-                 * Get User Record from id
+                 * Get Record from id
                  */
-                $kebutuhan = Kebutuhan::with(['posko.user', 'barang.jenisBarang'])->where('IDPengungsi', $request->id)->first();
+                $kebutuhan = Kebutuhan::with(['posko.user', 'barang.jenisBarang'])->where('IDKebutuhan', $request->id)->first();
 
                 /**
                  * Validation kebutuhan id
@@ -68,10 +70,7 @@ class KebutuhanController extends Controller
                 }
             }
 
-            return ApiResponse::success([
-                'barang' => $barang,
-                'posko' => $posko
-            ]);
+            return ApiResponse::success($data);
         } catch (\Throwable $th) {
 
             return ApiResponse::badRequest($th->getMessage());
@@ -81,7 +80,7 @@ class KebutuhanController extends Controller
     public function show($id)  // id yang digunakan idposko
     {
         // tampilan data kebutuhan
-        $kebutuhan = Kebutuhan::with(['posko.user', 'barang.jenisBarang'])->where('IDKebutuhan', $id)->first();
+        $kebutuhan = Kebutuhan::with(['posko.user', 'barang.jenisBarang', 'user'])->where('IDKebutuhan', $id)->first();
 
         if (is_null($kebutuhan)) {
             return ApiResponse::notFound('Data kebutuhan tidak ditemukan.');

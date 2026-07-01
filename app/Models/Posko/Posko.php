@@ -13,6 +13,7 @@ class Posko extends Model
     use HasFactory;
 
     protected $table = 'posko';
+    protected $primaryKey = 'IDPosko';
     protected $guarded = [];
     public $timestamps = false;
 

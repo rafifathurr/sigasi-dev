@@ -10,18 +10,19 @@ use Illuminate\Database\Eloquent\Model;
 class Pengungsi extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'pengungsi';
+    protected $primaryKey = 'IDPengungsi';
     protected $guarded = [];
     public $timestamps = false;
 
     public function penduduk()
     {
-        return $this->hasOne(Penduduk::class,'IDPenduduk','IDPenduduk');
+        return $this->hasOne(Penduduk::class, 'IDPenduduk', 'IDPenduduk');
     }
 
     public function posko()
     {
-        return $this->hasOne(Posko::class,'IDPosko','IDPosko');
+        return $this->hasOne(Posko::class, 'IDPosko', 'IDPosko');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models\Kebutuhan;
 
 use App\Models\Barang\Barang;
 use App\Models\Posko\Posko;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +13,7 @@ class Kebutuhan extends Model
     use HasFactory;
 
     protected $table = 'kebutuhan';
+    protected $primaryKey = 'IDKebutuhan';
     protected $guarded = [];
     public $timestamps = false;
 
@@ -23,5 +25,10 @@ class Kebutuhan extends Model
     public function barang()
     {
         return $this->hasOne(Barang::class,'IDBarang','IDBarang');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class,'id','LastUpdateBy');
     }
 }

@@ -10,6 +10,7 @@ class Kelompok extends Model
     use HasFactory;
 
     protected $table = 'kelompok';
+    protected $primaryKey = 'IDKelompok';
     protected $guarded = [];
     public $timestamps = false;
 }

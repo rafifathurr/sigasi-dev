@@ -18,7 +18,8 @@ class BarangController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('role:kecamatan');
+        $this->middleware('role:kecamatan', ['except' => ['index']]);
+        $this->middleware('role:posko-utama|posko', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
     }
 
     public function index(Request $request)

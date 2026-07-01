@@ -10,6 +10,7 @@ class JenisBarang extends Model
     use HasFactory;
     
     protected $table = 'jenis_barang';
+    protected $primaryKey = 'IDJenisBarang';
     protected $guarded = [];
     public $timestamps = false;
 }

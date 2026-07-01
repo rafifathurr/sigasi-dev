@@ -11,6 +11,7 @@ class Bantuan_Dtl extends Model
     use HasFactory;
     
     protected $table = 'bantuan_dtl';
+    protected $primaryKey = 'IDBantuanDTL';
     protected $guarded = [];
     public $timestamps = false;
 

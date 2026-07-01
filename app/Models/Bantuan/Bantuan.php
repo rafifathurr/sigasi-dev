@@ -11,6 +11,7 @@ class Bantuan extends Model
     use HasFactory;
     
     protected $table = 'bantuan';
+    protected $primaryKey = 'IDBantuan';
     protected $guarded = [];
     public $timestamps = false;
 

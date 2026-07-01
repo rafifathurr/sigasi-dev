@@ -19,7 +19,7 @@ class DonaturController extends Controller
     {
         parent::__construct();
         $this->middleware('role:bansos', ['except' => ['index']]);
-        $this->middleware('role:bansos|kecamatan', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
+        $this->middleware('role:bansos|kecamatan|posko-utama|posko', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
     }
     /**
      * Display a listing of the resource.
