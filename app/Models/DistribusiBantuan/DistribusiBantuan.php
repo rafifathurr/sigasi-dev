@@ -12,6 +12,7 @@ class DistribusiBantuan extends Model
     use HasFactory;
 
     protected $table = 'distribusi_bantuan';
+    protected $primaryKey = 'IDDistribusiBantuan';
     protected $guarded = [];
     public $timestamps = false;
 

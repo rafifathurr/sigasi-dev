@@ -19,7 +19,7 @@ class BarangController extends Controller
     {
         parent::__construct();
         $this->middleware('role:kecamatan', ['except' => ['index']]);
-        $this->middleware('role:posko-utama|posko', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
+        $this->middleware('role:kecamatan|posko-utama|posko', ['except' => ['createOrEdit', 'store', 'update', 'destroy']]);
     }
 
     public function index(Request $request)
@@ -100,7 +100,6 @@ class BarangController extends Controller
         }
     }
 
-
     public function show($id)
     {
         try {
@@ -121,7 +120,6 @@ class BarangController extends Controller
             return response()->json(['message' => $th->getMessage()], 500);
         }
     }
-
 
     public function update(Request $request, $id)
     {

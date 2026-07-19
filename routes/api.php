@@ -12,7 +12,6 @@ use App\Http\Controllers\Api\Pengungsi\PengungsiController;
 use App\Http\Controllers\Api\Bantuan\BantuanController;
 use App\Http\Controllers\Api\DistribusiBantuan\DistribusiBantuanController;
 use App\Http\Controllers\Api\LogActivity\LogActivityController;
-use App\Http\Controllers\Api\Menus\MenusController;
 use App\Http\Controllers\Api\UserManagement\UserManagementController;
 use App\Http\Helpers\ApiResponse;
 use App\Models\Menus\Menus;
@@ -161,6 +160,7 @@ Route::middleware('auth:api')->group(function () {
         ->prefix('distribusi-bantuan')
         ->group(function () {
             Route::get('/', 'index');
+            Route::get('create-edit', 'createOrEdit');
             Route::get('show/{id}', 'show');
             Route::post('store', 'store');
             Route::put('update/{id}', 'update');

@@ -20,7 +20,8 @@ class BantuanController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('role:kecamatan|posko-utama');
+        $this->middleware('role:kecamatan|posko-utama', ['except' => ['index', 'show']]);
+        $this->middleware('role:bansos|kecamatan|posko-utama', ['except' => ['createOrEdit', 'store', 'update', 'destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -139,7 +140,7 @@ class BantuanController extends Controller
             // Menggunakan eager loading untuk memuat relasi 'donatur' dan 'bantuanDetail.barang' secara bersamaan
             $bantuan = Bantuan::with([
                 'donatur', // Memuat relasi 'donatur'
-                'bantuanDetail.barang' // Memuat relasi 'bantuanDetail' dan relasi turunan 'barang'
+                'bantuanDetail.barang.jenisBarang' // Memuat relasi 'bantuanDetail' dan relasi turunan 'barang'
             ])
                 ->where('IDBantuan', $id) // Filter data berdasarkan IDBantuan
                 ->first(); // Mengambil record pertama yang cocok

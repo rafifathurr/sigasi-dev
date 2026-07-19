@@ -26,7 +26,7 @@ class PoskoController extends Controller
         /**
          * Super Posko Utama and Posko Access
          */
-        $this->middleware('role:posko-utama|posko', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
+        $this->middleware('role:posko-utama|posko', ['except' => ['createOrEdit', 'store', 'update', 'destroy']]);
     }
 
     public function index(Request $request)
@@ -63,7 +63,9 @@ class PoskoController extends Controller
 
             $posko_id = Posko::whereNull('deleted_by')->whereNull('deleted_at')->pluck('Ketua')->toArray();
 
-            $users = User::with(['roles'])->whereNull('deleted_at')->whereNotIn('id', $posko_id)->whereHas('roles', function ($query) {
+            $users = !empty($posko_id) ? User::with(['roles'])->whereNull('deleted_at')->whereNotIn('id', $posko_id)->whereHas('roles', function ($query) {
+                $query->where('id', 2);
+            })->get() : User::with(['roles'])->whereNull('deleted_at')->whereHas('roles', function ($query) {
                 $query->where('id', 2);
             })->get();
 

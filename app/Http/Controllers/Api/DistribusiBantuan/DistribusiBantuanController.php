@@ -19,40 +19,74 @@ class DistribusiBantuanController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('role:bansos');
-        $this->middleware('role:posko|posko-utama')->only('index');
+        $this->middleware('role:bansos', ['except' => ['index', 'show']]);
+        $this->middleware('role:bansos|posko-utama|posko', ['except' => ['createOrEdit', 'store', 'update', 'destroy']]);
     }
 
     public function index(Request $request)
     {
         // menampilkan data distribusi bantuan dengan dibatasi 10 record
-        $distribusi_bantuan = DistribusiBantuan::whereNull('deleted_by')->whereNull('deleted_at')->with(['posko.user', 'bantuan.bantuanDetail.barang.jenisBarang']);
+        $distribusi_bantuan = DistribusiBantuan::with(['posko.user', 'bantuan.bantuanDetail.barang.jenisBarang', 'bantuan.donatur'])->whereNull('deleted_by')->whereNull('deleted_at')->with(['posko.user', 'bantuan.bantuanDetail.barang.jenisBarang']);
 
         // pencarian berdasarkan id posko
         if (isset($request->posko)) {
-            $distribusi_bantuan->where('IDPosko', $request->posko);
+            $distribusi_bantuan = $distribusi_bantuan->where('IDPosko', $request->posko);
         }
 
         // pencarian berdasarkan id bantuan
         if (isset($request->bantuan)) {
-            $distribusi_bantuan->where('IDBantuan', $request->posko);
+            $distribusi_bantuan = $distribusi_bantuan->where('IDBantuan', $request->posko);
         }
 
-        $distribusi_bantuan = $distribusi_bantuan->paginate(10);
-        return ApiResponse::success($distribusi_bantuan);
+        if (isset($request->all) && $request->all) {
+            return ApiResponse::success($distribusi_bantuan->get());
+        }
+
+        return ApiResponse::success($distribusi_bantuan->paginate(10));
     }
 
-    public function createOrEdit()
+    public function createOrEdit(Request $request)
     {
         try {
 
-            $bantuan = Bantuan::whereNull('deleted_by')->whereNull('deleted_at')->get();
-            $posko = Posko::whereNull('deleted_by')->whereNull('deleted_at')->get();
+            $bantuan_id = array_unique(DistribusiBantuan::whereNull('deleted_by')->whereNull('deleted_at')->pluck('IDBantuan')->toArray());
+            $bantuan = Bantuan::with(['donatur'])->whereNull('deleted_by')->whereNull('deleted_at');
+            $posko = Posko::with(['user'])->whereNull('deleted_by')->whereNull('deleted_at');
 
-            return ApiResponse::success([
-                'bantuan' => $bantuan,
-                'posko' => $posko
-            ]);
+            if (isset($request->id)) {
+
+                /**
+                 * Get Record from id
+                 */
+                $distribusi_bantuan = DistribusiBantuan::with(['posko.user', 'bantuan.bantuanDetail.barang.jenisBarang', 'bantuan.donatur'])->where('IDDistribusiBantuan', $request->id)->first();
+
+                if (is_null($distribusi_bantuan)) {
+                    return ApiResponse::notFound('Data distribusi bantuan tidak ditemukan.');
+                }
+
+                /**
+                 * Validation distribusi bantuan id
+                 */
+                if (!is_null($distribusi_bantuan)) {
+                    if (($key = array_search($distribusi_bantuan->IDBantuan, $bantuan_id)) !== false) {
+                        unset($bantuan_id[$key]);
+                    }
+
+                    $data['bantuans_id'] = $bantuan_id;
+                    $data['distribusi_bantuan'] = $distribusi_bantuan;
+                } else {
+                    return ApiResponse::badRequest('Data Tidak Ditemukan');
+                }
+            }
+
+            $data['bantuans'] = !empty($bantuan_id) ? $bantuan->whereNotIn('IDBantuan', $bantuan_id)->get() : $bantuan->get();
+            $data['poskos'] = $posko->get();
+
+            if (auth()->user()->hasRole('posko')) {
+                $data['posko'] = $posko->where('Ketua', auth()->user()->id)->first();
+            }
+
+            return ApiResponse::success($data);
         } catch (\Throwable $th) {
 
             return ApiResponse::badRequest($th->getMessage());
@@ -62,7 +96,7 @@ class DistribusiBantuanController extends Controller
     public function show($id)  // id yang digunakan idposko
     {
         // tampilan data berdasarkan id posko
-        $distribusi_bantuan = DistribusiBantuan::with(['posko.user', 'bantuan.bantuanDetail.barang.jenisBarang'])->where('IDdistribusi_bantuan', $id)->first();
+        $distribusi_bantuan = DistribusiBantuan::with(['posko.user', 'bantuan.bantuanDetail.barang.jenisBarang', 'bantuan.donatur'])->where('IDDistribusiBantuan', $id)->first();
 
         if (is_null($distribusi_bantuan)) {
             return ApiResponse::notFound('Data distribusi bantuan tidak ditemukan.');
@@ -77,7 +111,7 @@ class DistribusiBantuanController extends Controller
             $validator = Validator::make($request->all(), [ // cek validasi sesuai parameter
                 'idPosko' => 'numeric',
                 'idBantuan' => 'numeric',
-                'tanggalDistribusi' => 'required',
+                // 'tanggalDistribusi' => 'required',
             ]);
 
             if ($validator->fails()) { // jika parameter ada yang tidak sesuai maka return error
@@ -90,7 +124,7 @@ class DistribusiBantuanController extends Controller
             $distribusi_bantuan = DistribusiBantuan::lockForUpdate()->create([
                 'IDPosko' => $request->idPosko,
                 'IDBantuan' => $request->idBantuan,
-                'TanggalDistribusi' => $request->tanggalDistribusi,
+                'TanggalDistribusi' => $request->tanggalDistribusi ?? date('Y-m-d'),
                 'Deskripsi' => $request->deskripsi,
             ]);
 
@@ -124,21 +158,16 @@ class DistribusiBantuanController extends Controller
             DB::beginTransaction(); // memulai transaksi
 
             // update data distribusi bantuan
-            $distribusi_bantuan = DistribusiBantuan::where('IDDistribusiBantuan', $id)->lockForUpdate()->update([
+            DistribusiBantuan::where('IDDistribusiBantuan', $id)->update([
                 'IDPosko' => $request->idPosko,
                 'IDBantuan' => $request->idBantuan,
-                'TanggalDistribusi' => $request->tanggalDistribusi,
+                'TanggalDistribusi' => $request->tanggalDistribusi ?? date('Y-m-d'),
                 'Deskripsi' => $request->deskripsi,
             ]);
 
-            if ($distribusi_bantuan) {
-                DB::commit(); // jika berhasil maka commit data
-                $data_distribusi_bantuan = DistribusiBantuan::with(['posko.user', 'bantuan.bantuanDetail.barang.jenisBarang'])->where('IDDistribusiBantuan', $id)->first();
-                return ApiResponse::created($data_distribusi_bantuan);
-            } else {
-                DB::rollBack();
-                return ApiResponse::badRequest('Data distribusi bantuan tidak dapat disimpan.');
-            }
+            DB::commit(); // jika berhasil maka commit data
+            $data_distribusi_bantuan = DistribusiBantuan::with(['posko.user', 'bantuan.bantuanDetail.barang.jenisBarang'])->where('IDDistribusiBantuan', $id)->first();
+            return ApiResponse::success($data_distribusi_bantuan);
         } catch (Exception $e) {
             return ApiResponse::badRequest($e);
         }
