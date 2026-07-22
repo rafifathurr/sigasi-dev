@@ -106,7 +106,7 @@ class DonaturController extends Controller
             }
 
             // Jika data donatur tidak ditemukan
-            return ApiResponse::notFound(); // Mengembalikan respons not found
+            return ApiResponse::notFound('Data donatur tidak ditemukan.'); // Mengembalikan respons not found
         } catch (\Throwable $th) {
             // Menangkap exception dan mengembalikan pesan error
             return ApiResponse::badRequest($th->getMessage());

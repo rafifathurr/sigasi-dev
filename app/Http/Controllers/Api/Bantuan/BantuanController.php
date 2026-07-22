@@ -152,7 +152,7 @@ class BantuanController extends Controller
             }
 
             // Jika data 'bantuan' tidak ditemukan, kembalikan respons 'not found'
-            return ApiResponse::notFound();
+            return ApiResponse::notFound('Data bantuan tidak ditemukan.');
         } catch (\Throwable $th) {
             // Jika terjadi error selama proses, tangkap exception dan kembalikan respons bad request dengan pesan error
             return ApiResponse::badRequest($th->getMessage());

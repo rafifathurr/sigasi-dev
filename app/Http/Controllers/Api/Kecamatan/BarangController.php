@@ -91,7 +91,7 @@ class BarangController extends Controller
             } else {
                 // Jika gagal, rollback transaksi
                 DB::rollback();
-                return ApiResponse::badRequest();
+                return ApiResponse::notFound('Data barang tidak ditemukan.');
             }
         } catch (\Throwable $th) {
             // Rollback transaksi jika terjadi exception
@@ -113,8 +113,8 @@ class BarangController extends Controller
                 return ApiResponse::success($barang); // Mengembalikan respons sukses dengan data barang
             }
 
-            // Jika tidak ditemukan, kembalikan respons bad request
-            return ApiResponse::badRequest();
+            // Jika tidak ditemukan, kembalikan respons not found
+            return ApiResponse::notFound('Data barang tidak ditemukan.');
         } catch (\Throwable $th) {
             // Menangkap exception dan mengembalikan pesan error dengan status 500
             return response()->json(['message' => $th->getMessage()], 500);

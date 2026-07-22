@@ -97,8 +97,8 @@ class JenisBarangController extends Controller
                 return ApiResponse::success($jenis_barang);
             }
 
-            // Jika tidak ditemukan, kembalikan response bad request
-            return ApiResponse::badRequest();
+            // Jika tidak ditemukan, kembalikan response not found
+            return ApiResponse::notFound('Data jenis barang tidak ditemukan.');
         } catch (\Throwable $th) {
             // Menangkap exception dan mengembalikan pesan error dengan status 500
             return response()->json(['message' => $th->getMessage()], 500);

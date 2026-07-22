@@ -23,6 +23,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Distribusi Bantuan Index',
                     'Method' => 'GET',
                     'Url' => 'distribusi-bantuan',
+                    'Sort' => 3,
                 ],
 
                 // KEBUTUHAN
@@ -32,6 +33,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kebutuhan Index',
                     'Method' => 'GET',
                     'Url' => 'kebutuhan',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'kebutuhan',
@@ -39,6 +41,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kebutuhan Show',
                     'Method' => 'GET',
                     'Url' => 'kebutuhan/show',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'kebutuhan',
@@ -46,6 +49,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kebutuhan Store',
                     'Method' => 'POST',
                     'Url' => 'kebutuhan/store',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'kebutuhan',
@@ -53,6 +57,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kebutuhan Update',
                     'Method' => 'PUT',
                     'Url' => 'kebutuhan/update',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'kebutuhan',
@@ -60,6 +65,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kebutuhan Delete',
                     'Method' => 'DELETE',
                     'Url' => 'kebutuhan/delete',
+                    'Sort' => 2,
                 ],
 
                 // PENGUNGSI
@@ -69,6 +75,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Pengungsi Index',
                     'Method' => 'GET',
                     'Url' => 'pengungsi',
+                    'Sort' => 1,
                 ],
                 [
                     'MenuCode' => 'pengungsi',
@@ -76,6 +83,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Pengungsi Show',
                     'Method' => 'GET',
                     'Url' => 'pengungsi/show',
+                    'Sort' => 1,
                 ],
                 [
                     'MenuCode' => 'pengungsi',
@@ -83,6 +91,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Pengungsi Store',
                     'Method' => 'POST',
                     'Url' => 'pengungsi/store',
+                    'Sort' => 1,
                 ],
                 [
                     'MenuCode' => 'pengungsi',
@@ -90,6 +99,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Pengungsi Update',
                     'Method' => 'PUT',
                     'Url' => 'pengungsi/update',
+                    'Sort' => 1,
                 ],
                 [
                     'MenuCode' => 'pengungsi',
@@ -97,6 +107,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Pengungsi Delete',
                     'Method' => 'DELETE',
                     'Url' => 'pengungsi/delete',
+                    'Sort' => 1,
                 ],
 
                 //=== POSKO UTAMA ===
@@ -108,6 +119,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Dashboard Index',
                     'Method' => 'GET',
                     'Url' => 'dashboard',
+                    'Sort' => 9,
                 ],
 
                 // DISTRIBUSI BANTUAN
@@ -117,6 +129,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Distribusi Bantuan Index',
                     'Method' => 'GET',
                     'Url' => 'distribusi-bantuan',
+                    'Sort' => 8,
                 ],
 
                 // BANTUAN
@@ -126,6 +139,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Bantuan Index',
                     'Method' => 'GET',
                     'Url' => 'bantuan',
+                    'Sort' => 7,
                 ],
                 [
                     'MenuCode' => 'bantuan',
@@ -133,6 +147,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Bantuan Show',
                     'Method' => 'GET',
                     'Url' => 'bantuan/show',
+                    'Sort' => 7,
                 ],
                 [
                     'MenuCode' => 'bantuan',
@@ -140,6 +155,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Bantuan Store',
                     'Method' => 'POST',
                     'Url' => 'bantuan/store',
+                    'Sort' => 7,
                 ],
                 [
                     'MenuCode' => 'bantuan',
@@ -147,6 +163,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Bantuan Update',
                     'Method' => 'PUT',
                     'Url' => 'bantuan/update',
+                    'Sort' => 7,
                 ],
                 [
                     'MenuCode' => 'bantuan',
@@ -154,6 +171,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Bantuan Delete',
                     'Method' => 'DELETE',
                     'Url' => 'bantuan/delete',
+                    'Sort' => 7,
                 ],
 
                 // KEBUTUHAN
@@ -163,6 +181,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kebutuhan Index',
                     'Method' => 'GET',
                     'Url' => 'kebutuhan',
+                    'Sort' => 6,
                 ],
                 [
                     'MenuCode' => 'kebutuhan',
@@ -170,6 +189,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kebutuhan Show',
                     'Method' => 'GET',
                     'Url' => 'kebutuhan/show',
+                    'Sort' => 6,
                 ],
                 [
                     'MenuCode' => 'kebutuhan',
@@ -177,6 +197,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kebutuhan Store',
                     'Method' => 'POST',
                     'Url' => 'kebutuhan/store',
+                    'Sort' => 6,
                 ],
                 [
                     'MenuCode' => 'kebutuhan',
@@ -184,6 +205,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kebutuhan Update',
                     'Method' => 'PUT',
                     'Url' => 'kebutuhan/update',
+                    'Sort' => 6,
                 ],
                 [
                     'MenuCode' => 'kebutuhan',
@@ -191,6 +213,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kebutuhan Delete',
                     'Method' => 'DELETE',
                     'Url' => 'kebutuhan/delete',
+                    'Sort' => 6,
                 ],
 
                 // PENGUNGSI
@@ -200,6 +223,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Pengungsi Index',
                     'Method' => 'GET',
                     'Url' => 'pengungsi',
+                    'Sort' => 5,
                 ],
                 [
                     'MenuCode' => 'pengungsi',
@@ -207,6 +231,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Pengungsi Show',
                     'Method' => 'GET',
                     'Url' => 'pengungsi/show',
+                    'Sort' => 5,
                 ],
                 [
                     'MenuCode' => 'pengungsi',
@@ -214,6 +239,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Pengungsi Store',
                     'Method' => 'POST',
                     'Url' => 'pengungsi/store',
+                    'Sort' => 5,
                 ],
                 [
                     'MenuCode' => 'pengungsi',
@@ -221,6 +247,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Pengungsi Update',
                     'Method' => 'PUT',
                     'Url' => 'pengungsi/update',
+                    'Sort' => 5,
                 ],
                 [
                     'MenuCode' => 'pengungsi',
@@ -228,6 +255,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Pengungsi Delete',
                     'Method' => 'DELETE',
                     'Url' => 'pengungsi/delete',
+                    'Sort' => 5,
                 ],
 
                 // PENDUDUK
@@ -237,6 +265,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Penduduk Index',
                     'Method' => 'GET',
                     'Url' => 'penduduk',
+                    'Sort' => 4,
                 ],
                 [
                     'MenuCode' => 'penduduk',
@@ -244,6 +273,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Penduduk Show',
                     'Method' => 'GET',
                     'Url' => 'penduduk/show',
+                    'Sort' => 4,
                 ],
                 [
                     'MenuCode' => 'penduduk',
@@ -251,6 +281,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Penduduk Store',
                     'Method' => 'POST',
                     'Url' => 'penduduk/store',
+                    'Sort' => 4,
                 ],
                 [
                     'MenuCode' => 'penduduk',
@@ -258,6 +289,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Penduduk Update',
                     'Method' => 'PUT',
                     'Url' => 'penduduk/update',
+                    'Sort' => 4,
                 ],
                 [
                     'MenuCode' => 'penduduk',
@@ -265,6 +297,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Penduduk Delete',
                     'Method' => 'DELETE',
                     'Url' => 'penduduk/delete',
+                    'Sort' => 4,
                 ],
 
                 // POSKO
@@ -274,6 +307,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Posko Index',
                     'Method' => 'GET',
                     'Url' => 'posko',
+                    'Sort' => 3,
                 ],
                 [
                     'MenuCode' => 'posko',
@@ -281,6 +315,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Posko Store',
                     'Method' => 'POST',
                     'Url' => 'posko/store',
+                    'Sort' => 3,
                 ],
                 [
                     'MenuCode' => 'posko',
@@ -288,6 +323,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Posko Show',
                     'Method' => 'GET',
                     'Url' => 'posko/show',
+                    'Sort' => 3,
                 ],
                 [
                     'MenuCode' => 'posko',
@@ -295,6 +331,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Posko Update',
                     'Method' => 'PUT',
                     'Url' => 'posko/update',
+                    'Sort' => 3,
                 ],
                 [
                     'MenuCode' => 'posko',
@@ -302,6 +339,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Posko Delete',
                     'Method' => 'DELETE',
                     'Url' => 'posko/delete',
+                    'Sort' => 3,
                 ],
 
                 // USER MANAGEMENT
@@ -311,6 +349,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'User Management Index',
                     'Method' => 'GET',
                     'Url' => 'user-management',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'user-management',
@@ -318,6 +357,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'User Management Show',
                     'Method' => 'GET',
                     'Url' => 'user-management/show',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'user-management',
@@ -325,6 +365,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'User Management Store',
                     'Method' => 'POST',
                     'Url' => 'user-management/store',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'user-management',
@@ -332,6 +373,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'User Management Update',
                     'Method' => 'PUT',
                     'Url' => 'user-management/update',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'user-management',
@@ -339,6 +381,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'User Management Delete',
                     'Method' => 'DELETE',
                     'Url' => 'user-management/delete',
+                    'Sort' => 2,
                 ],
 
                 // LOG ACTIVITY
@@ -348,6 +391,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Log Activity Index',
                     'Method' => 'GET',
                     'Url' => 'log-activity',
+                    'Sort' => 1,
                 ],
 
                 //=== BANSOS ===
@@ -359,6 +403,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Dashboard Index',
                     'Method' => 'GET',
                     'Url' => 'dashboard',
+                    'Sort' => 3,
                 ],
 
                 // DISTRIBUSI BANTUAN
@@ -368,6 +413,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Distribusi Bantuan Index',
                     'Method' => 'GET',
                     'Url' => 'distribusi-bantuan',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'distribusi-bantuan',
@@ -375,6 +421,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Distribusi Bantuan Show',
                     'Method' => 'GET',
                     'Url' => 'distribusi-bantuan/show',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'distribusi-bantuan',
@@ -382,6 +429,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Distribusi Bantuan Store',
                     'Method' => 'POST',
                     'Url' => 'distribusi-bantuan/store',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'distribusi-bantuan',
@@ -389,6 +437,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Distribusi Bantuan Update',
                     'Method' => 'PUT',
                     'Url' => 'distribusi-bantuan/update',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'distribusi-bantuan',
@@ -396,6 +445,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Distribusi Bantuan Delete',
                     'Method' => 'DELETE',
                     'Url' => 'distribusi-bantuan/delete',
+                    'Sort' => 2,
                 ],
 
                 // DONATUR
@@ -405,6 +455,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Donatur Index',
                     'Method' => 'GET',
                     'Url' => 'donatur',
+                    'Sort' => 1,
                 ],
                 [
                     'MenuCode' => 'donatur',
@@ -412,6 +463,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Donatur Show',
                     'Method' => 'GET',
                     'Url' => 'donatur/show',
+                    'Sort' => 1,
                 ],
                 [
                     'MenuCode' => 'donatur',
@@ -419,6 +471,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Donatur Store',
                     'Method' => 'POST',
                     'Url' => 'donatur/store',
+                    'Sort' => 1,
                 ],
                 [
                     'MenuCode' => 'donatur',
@@ -426,6 +479,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Donatur Update',
                     'Method' => 'PUT',
                     'Url' => 'donatur/update',
+                    'Sort' => 1,
                 ],
                 [
                     'MenuCode' => 'donatur',
@@ -433,6 +487,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Donatur Delete',
                     'Method' => 'DELETE',
                     'Url' => 'donatur/delete',
+                    'Sort' => 1,
                 ],
 
                 //=== KECAMATAN ===
@@ -444,6 +499,49 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Dashboard Index',
                     'Method' => 'GET',
                     'Url' => 'dashboard',
+                    'Sort' => 8,
+                ],
+
+                // RENCANA ANGGARAN
+                [
+                    'MenuCode' => 'rencana-anggaran',
+                    'Role' => 'kecamatan',
+                    'Menu' => 'Rencana Anggaran Index',
+                    'Method' => 'GET',
+                    'Url' => 'rencana-anggaran',
+                    'Sort' => 7,
+                ],
+                [
+                    'MenuCode' => 'rencana-anggaran',
+                    'Role' => 'kecamatan',
+                    'Menu' => 'Rencana Anggaran Show',
+                    'Method' => 'GET',
+                    'Url' => 'rencana-anggaran/show',
+                    'Sort' => 7,
+                ],
+                [
+                    'MenuCode' => 'rencana-anggaran',
+                    'Role' => 'kecamatan',
+                    'Menu' => 'Rencana Anggaran Store',
+                    'Method' => 'POST',
+                    'Url' => 'rencana-anggaran/store',
+                    'Sort' => 7,
+                ],
+                [
+                    'MenuCode' => 'rencana-anggaran',
+                    'Role' => 'kecamatan',
+                    'Menu' => 'Rencana Anggaran Update',
+                    'Method' => 'PUT',
+                    'Url' => 'rencana-anggaran/update',
+                    'Sort' => 7,
+                ],
+                [
+                    'MenuCode' => 'rencana-anggaran',
+                    'Role' => 'kecamatan',
+                    'Menu' => 'Rencana Anggaran Delete',
+                    'Method' => 'DELETE',
+                    'Url' => 'rencana-anggaran/delete',
+                    'Sort' => 7,
                 ],
 
                 // BANTUAN
@@ -453,6 +551,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Bantuan Index',
                     'Method' => 'GET',
                     'Url' => 'bantuan',
+                    'Sort' => 6,
                 ],
                 [
                     'MenuCode' => 'bantuan',
@@ -460,6 +559,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Bantuan Show',
                     'Method' => 'GET',
                     'Url' => 'bantuan/show',
+                    'Sort' => 6,
                 ],
                 [
                     'MenuCode' => 'bantuan',
@@ -467,6 +567,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Bantuan Store',
                     'Method' => 'POST',
                     'Url' => 'bantuan/store',
+                    'Sort' => 6,
                 ],
                 [
                     'MenuCode' => 'bantuan',
@@ -474,6 +575,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Bantuan Update',
                     'Method' => 'PUT',
                     'Url' => 'bantuan/update',
+                    'Sort' => 6,
                 ],
                 [
                     'MenuCode' => 'bantuan',
@@ -481,6 +583,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Bantuan Delete',
                     'Method' => 'DELETE',
                     'Url' => 'bantuan/delete',
+                    'Sort' => 6,
                 ],
 
                 // DONATUR
@@ -490,6 +593,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Donatur Index',
                     'Method' => 'GET',
                     'Url' => 'donatur',
+                    'Sort' => 5,
                 ],
 
                 // PENDUDUK
@@ -499,6 +603,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Penduduk Index',
                     'Method' => 'GET',
                     'Url' => 'penduduk',
+                    'Sort' => 4,
                 ],
                 [
                     'MenuCode' => 'penduduk',
@@ -506,6 +611,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Penduduk Show',
                     'Method' => 'GET',
                     'Url' => 'penduduk/show',
+                    'Sort' => 4,
                 ],
                 [
                     'MenuCode' => 'penduduk',
@@ -513,6 +619,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Penduduk Store',
                     'Method' => 'POST',
                     'Url' => 'penduduk/store',
+                    'Sort' => 4,
                 ],
                 [
                     'MenuCode' => 'penduduk',
@@ -520,6 +627,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Penduduk Update',
                     'Method' => 'PUT',
                     'Url' => 'penduduk/update',
+                    'Sort' => 4,
                 ],
                 [
                     'MenuCode' => 'penduduk',
@@ -527,6 +635,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Penduduk Delete',
                     'Method' => 'DELETE',
                     'Url' => 'penduduk/delete',
+                    'Sort' => 4,
                 ],
 
                 // KELOMPOK
@@ -536,6 +645,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kelompok Index',
                     'Method' => 'GET',
                     'Url' => 'kelompok',
+                    'Sort' => 3,
                 ],
                 [
                     'MenuCode' => 'kelompok',
@@ -543,6 +653,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kelompok Show',
                     'Method' => 'GET',
                     'Url' => 'kelompok/show',
+                    'Sort' => 3,
                 ],
                 [
                     'MenuCode' => 'kelompok',
@@ -550,6 +661,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kelompok Store',
                     'Method' => 'POST',
                     'Url' => 'kelompok/store',
+                    'Sort' => 3,
                 ],
                 [
                     'MenuCode' => 'kelompok',
@@ -557,6 +669,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kelompok Update',
                     'Method' => 'PUT',
                     'Url' => 'kelompok/update',
+                    'Sort' => 3,
                 ],
                 [
                     'MenuCode' => 'kelompok',
@@ -564,6 +677,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Kelompok Delete',
                     'Method' => 'DELETE',
                     'Url' => 'kelompok/delete',
+                    'Sort' => 3,
                 ],
 
                 // BARANG
@@ -573,6 +687,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Barang Index',
                     'Method' => 'GET',
                     'Url' => 'barang',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'barang',
@@ -580,6 +695,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Barang Show',
                     'Method' => 'GET',
                     'Url' => 'barang/show',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'barang',
@@ -587,6 +703,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Barang Store',
                     'Method' => 'POST',
                     'Url' => 'barang/store',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'barang',
@@ -594,6 +711,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Barang Update',
                     'Method' => 'PUT',
                     'Url' => 'barang/update',
+                    'Sort' => 2,
                 ],
                 [
                     'MenuCode' => 'barang',
@@ -601,6 +719,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Barang Delete',
                     'Method' => 'DELETE',
                     'Url' => 'barang/delete',
+                    'Sort' => 2,
                 ],
 
                 // JENIS BARANG
@@ -610,6 +729,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Jenis Barang Index',
                     'Method' => 'GET',
                     'Url' => 'jenis-barang',
+                    'Sort' => 1,
                 ],
                 [
                     'MenuCode' => 'jenis-barang',
@@ -617,6 +737,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Jenis Barang Show',
                     'Method' => 'GET',
                     'Url' => 'jenis-barang/show',
+                    'Sort' => 1,
                 ],
                 [
                     'MenuCode' => 'jenis-barang',
@@ -624,6 +745,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Jenis Barang Store',
                     'Method' => 'POST',
                     'Url' => 'jenis-barang/store',
+                    'Sort' => 1,
                 ],
                 [
                     'MenuCode' => 'jenis-barang',
@@ -631,6 +753,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Jenis Barang Update',
                     'Method' => 'PUT',
                     'Url' => 'jenis-barang/update',
+                    'Sort' => 1,
                 ],
                 [
                     'MenuCode' => 'jenis-barang',
@@ -638,6 +761,7 @@ class MenuSeeder extends Seeder
                     'Menu' => 'Jenis Barang Delete',
                     'Method' => 'DELETE',
                     'Url' => 'jenis-barang/delete',
+                    'Sort' => 1,
                 ],
             ]
         );

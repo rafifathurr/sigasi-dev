@@ -74,7 +74,7 @@ class PendudukController extends Controller
                 if (!is_null($penduduk)) {
                     $data['penduduk'] = $penduduk;
                 } else {
-                    return ApiResponse::badRequest('Data Tidak Ditemukan');
+                    return ApiResponse::notFound('Data penduduk tidak ditemukan.');
                 }
             }
 
@@ -157,7 +157,7 @@ class PendudukController extends Controller
             }
 
             // Jika penduduk tidak ditemukan, kembalikan response not found
-            return ApiResponse::notFound();
+            return ApiResponse::notFound('Data penduduk tidak ditemukan.');
         } catch (\Throwable $th) {
             // Tangani exception dan kembalikan error
             return ApiResponse::badRequest($th->getMessage());

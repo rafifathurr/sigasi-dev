@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('Menu');
             $table->string('Method');
             $table->string('Url');
-            $table->integer('Sort')->nullable();
+            $table->integer('Sort');
             $table->timestamps();
         });
     }

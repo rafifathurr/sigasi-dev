@@ -65,7 +65,7 @@ class UserManagementController extends Controller
                     $data['user_role'] = $user->getRoleNames()[0];
                     $data['user_role_name'] = ucwords(implode(' ', explode('-', $user->getRoleNames()[0])));
                 } else {
-                    return ApiResponse::badRequest('Data Tidak Ditemukan');
+                    return ApiResponse::notFound('Data user tidak ditemukan.');
                 }
             }
 
@@ -142,7 +142,7 @@ class UserManagementController extends Controller
 
                 return ApiResponse::success($data);
             } else {
-                return ApiResponse::badRequest('Data Tidak Ditemukan');
+                return ApiResponse::notFound('Data user tidak ditemukan.');
             }
         } catch (Exception $e) {
             return ApiResponse::badRequest($e->getMessage());

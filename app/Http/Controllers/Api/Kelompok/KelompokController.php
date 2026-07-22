@@ -99,7 +99,7 @@ class KelompokController extends Controller
             }
 
             // Jika kelompok tidak ditemukan, kembalikan response not found
-            return ApiResponse::notFound();
+            return ApiResponse::notFound('Data kelompok tidak ditemukan.');
         } catch (\Throwable $th) {
             // Tangani exception
             return ApiResponse::badRequest($th->getMessage());

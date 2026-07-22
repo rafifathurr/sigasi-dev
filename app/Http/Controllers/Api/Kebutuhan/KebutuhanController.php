@@ -66,7 +66,7 @@ class KebutuhanController extends Controller
                 if (!is_null($kebutuhan)) {
                     $data['kebutuhan'] = $kebutuhan;
                 } else {
-                    return ApiResponse::badRequest('Data Tidak Ditemukan');
+                    return ApiResponse::notFound('Data kebutuhan tidak ditemukan.');
                 }
             }
 

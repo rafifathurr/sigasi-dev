@@ -26,7 +26,7 @@ class DistribusiBantuanController extends Controller
     public function index(Request $request)
     {
         // menampilkan data distribusi bantuan dengan dibatasi 10 record
-        $distribusi_bantuan = DistribusiBantuan::with(['posko.user', 'bantuan.bantuanDetail.barang.jenisBarang', 'bantuan.donatur'])->whereNull('deleted_by')->whereNull('deleted_at')->with(['posko.user', 'bantuan.bantuanDetail.barang.jenisBarang']);
+        $distribusi_bantuan = DistribusiBantuan::with(['posko.user', 'bantuan.bantuanDetail.barang.jenisBarang', 'bantuan.donatur'])->whereNull('deleted_by')->whereNull('deleted_at');
 
         // pencarian berdasarkan id posko
         if (isset($request->posko)) {
@@ -60,22 +60,18 @@ class DistribusiBantuanController extends Controller
                  */
                 $distribusi_bantuan = DistribusiBantuan::with(['posko.user', 'bantuan.bantuanDetail.barang.jenisBarang', 'bantuan.donatur'])->where('IDDistribusiBantuan', $request->id)->first();
 
-                if (is_null($distribusi_bantuan)) {
-                    return ApiResponse::notFound('Data distribusi bantuan tidak ditemukan.');
-                }
-
                 /**
                  * Validation distribusi bantuan id
                  */
                 if (!is_null($distribusi_bantuan)) {
+
                     if (($key = array_search($distribusi_bantuan->IDBantuan, $bantuan_id)) !== false) {
                         unset($bantuan_id[$key]);
                     }
 
-                    $data['bantuans_id'] = $bantuan_id;
                     $data['distribusi_bantuan'] = $distribusi_bantuan;
                 } else {
-                    return ApiResponse::badRequest('Data Tidak Ditemukan');
+                    return ApiResponse::notFound('Data distribusi bantuan tidak ditemukan.');
                 }
             }
 

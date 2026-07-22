@@ -51,7 +51,7 @@ class PoskoController extends Controller
         $posko = Posko::with(['user'])->where('IDPosko', $id)->first();
 
         if (is_null($posko)) { // jika posko tidak ada, maka masuk kondisi error
-            return ApiResponse::badRequest('Data posko tidak ditemukan.');
+            return ApiResponse::notFound('Data posko tidak ditemukan.');
         }
 
         return ApiResponse::success($posko); // data dari posko
@@ -98,7 +98,7 @@ class PoskoController extends Controller
                         'posko' => $posko,
                     ];
                 } else {
-                    return ApiResponse::badRequest('Data Tidak Ditemukan');
+                    return ApiResponse::notFound('Data posko tidak ditemukan.');
                 }
             }
 

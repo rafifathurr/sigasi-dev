@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\Penduduk\PendudukController;
 use App\Http\Controllers\Api\Pengungsi\PengungsiController;
 use App\Http\Controllers\Api\Bantuan\BantuanController;
 use App\Http\Controllers\Api\DistribusiBantuan\DistribusiBantuanController;
+use App\Http\Controllers\Api\RencanaAnggaran\RencanaAnggaranController;
 use App\Http\Controllers\Api\LogActivity\LogActivityController;
 use App\Http\Controllers\Api\UserManagement\UserManagementController;
 use App\Http\Helpers\ApiResponse;
@@ -45,7 +46,7 @@ Route::middleware('auth:api')->group(function () {
         return ApiResponse::success([
             'user' => auth()->guard('api')->user(),
             'role' => $role,
-            'menus' => !is_null($role) ? Menus::where('Role', $role)->get() : [],
+            'menus' => !is_null($role) ? Menus::where('Role', $role)->orderBy('Sort', 'DESC')->get() : [],
         ]);
     });
 
@@ -158,6 +159,17 @@ Route::middleware('auth:api')->group(function () {
 
     Route::controller(DistribusiBantuanController::class)
         ->prefix('distribusi-bantuan')
+        ->group(function () {
+            Route::get('/', 'index');
+            Route::get('create-edit', 'createOrEdit');
+            Route::get('show/{id}', 'show');
+            Route::post('store', 'store');
+            Route::put('update/{id}', 'update');
+            Route::delete('delete/{id}', 'delete');
+        });
+
+    Route::controller(RencanaAnggaranController::class)
+        ->prefix('rencana-anggaran')
         ->group(function () {
             Route::get('/', 'index');
             Route::get('create-edit', 'createOrEdit');

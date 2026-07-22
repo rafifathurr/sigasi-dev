@@ -47,7 +47,7 @@ class AuthController extends Controller
             return ApiResponse::success([
                 'user' => auth()->guard('api')->user(),
                 'role' => $role,
-                'menus' => !is_null($role) ? Menus::where('Role', $role)->get() : [],
+                'menus' => !is_null($role) ? Menus::where('Role', $role)->orderBy('Sort', 'DESC')->get() : [],
                 'token' => $token,
             ]);
         } catch (\Exception $e) {

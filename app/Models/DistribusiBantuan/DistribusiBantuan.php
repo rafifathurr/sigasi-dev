@@ -18,11 +18,11 @@ class DistribusiBantuan extends Model
 
     public function posko()
     {
-        return $this->hasOne(Posko::class,'IDPosko','IDPosko');
+        return $this->hasOne(Posko::class, 'IDPosko', 'IDPosko');
     }
 
     public function bantuan()
     {
-        return $this->hasOne(Bantuan::class,'IDBantuan','IDBantuan');
+        return $this->hasOne(Bantuan::class, 'IDBantuan', 'IDBantuan');
     }
 }

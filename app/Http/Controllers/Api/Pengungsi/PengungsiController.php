@@ -53,7 +53,7 @@ class PengungsiController extends Controller
         $pengungsi = Pengungsi::with(['penduduk.kelompok', 'posko.user'])->where('IDPengungsi', $id)->first();
 
         if (is_null($pengungsi)) {
-            return ApiResponse::badRequest('Data pengungsi tidak ditemukan.');
+            return ApiResponse::notFound('Data pengungsi tidak ditemukan.');
         }
 
         return ApiResponse::success($pengungsi);
@@ -98,7 +98,7 @@ class PengungsiController extends Controller
                         'pengungsi' => $pengungsi,
                     ];
                 } else {
-                    return ApiResponse::badRequest('Data Tidak Ditemukan');
+                    return ApiResponse::notFound('Data pengungsi tidak ditemukan.');
                 }
             }
 
