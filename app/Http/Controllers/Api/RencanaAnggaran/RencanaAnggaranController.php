@@ -52,8 +52,11 @@ class RencanaAnggaranController extends Controller
                  * Validation rencana anggaran id
                  */
                 if (!is_null($rencana_anggaran)) {
-                    if (($key = array_search($rencana_anggaran->IDBantuan, $bantuan_id)) !== false) {
-                        unset($bantuan_id[$key]);
+
+                    foreach ($rencana_anggaran->rencanaAnggaranItems as $item) {
+                        if (($key = array_search($item->IDBantuan, $bantuan_id)) !== false) {
+                            unset($bantuan_id[$key]);
+                        }
                     }
 
                     $data['rencana_anggaran'] = $rencana_anggaran;
@@ -192,10 +195,6 @@ class RencanaAnggaranController extends Controller
 
             if ($request->NilaiAnggaran > $total_nilai_anggaran) {
                 return ApiResponse::badRequest('Nilai anggaran tidak boleh lebih besar dari total harga barang.');
-            }
-
-            if ($request->NilaiAnggaran < $total_nilai_anggaran) {
-                return ApiResponse::badRequest('Nilai anggaran tidak boleh lebih kecil dari total harga barang.');
             }
 
             DB::beginTransaction(); // memulai transaksi
